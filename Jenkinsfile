@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout your Android project from SCM
-                git branch: 'main', credentialsId: 'your-git-credentials-id', url: 'your-repository-url'
+                git branch: 'main', credentialsId: '', url: 'https://github.com/idreytser-kryptowire/OpenCalc.git'
             }
         }
 
