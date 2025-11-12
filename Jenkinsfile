@@ -32,11 +32,7 @@ pipeline {
         stage('Kryptowire') {
             steps {
                 //using a try-catch block so the pipeline script won't fail if the krypowire plugin is not installed
-                try {
-                    kwSubmit filePath: "app/build/outputs/apk/debug/app-debug.apk", platform: 'android'
-                } catch(Error e) {
-                    e.printStackTrace()
-                }
+                kwSubmit filePath: "app/build/outputs/apk/debug/app-debug.apk", platform: 'android'
             }
         }
         
