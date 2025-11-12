@@ -5,6 +5,8 @@ pipeline {
         // Define your build variant (e.g., debug, release)
         BUILD_TYPE = 'debug' 
         ANDROID_HOME = '/home/ilya/Android/Sdk'
+        JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+        PATH=$JAVA_HOME/bin:PATH
     }
 
     stages {
@@ -27,6 +29,8 @@ pipeline {
                 // Build the Android app for the specified BUILD_TYPE
                 sh "echo $ANDROID_HOME"
                 sh "/usr/lib/jvm/java-21-openjdk-amd64/bin/javac --version"
+                sh "echo $JAVA_HOME"
+                sh "sdkmanager --licenses"
                 sh "./gradlew --debug --scan assemble${BUILD_TYPE.capitalize()}"
             }
         }
