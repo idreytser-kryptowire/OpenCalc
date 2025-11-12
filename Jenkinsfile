@@ -26,7 +26,7 @@ pipeline {
             steps {
                 // Build the Android app for the specified BUILD_TYPE
                 sh "echo $ANDROID_HOME"
-                sh "./gradlew assemble${BUILD_TYPE.capitalize()}"
+                sh "./gradlew --scan assemble${BUILD_TYPE.capitalize()}"
             }
         }
 
