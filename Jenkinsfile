@@ -6,7 +6,6 @@ pipeline {
         BUILD_TYPE = 'debug' 
         ANDROID_HOME = '/home/ilya/Android/Sdk'
         JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-        PATH=$JAVA_HOME/bin:PATH
     }
 
     stages {
