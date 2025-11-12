@@ -26,6 +26,7 @@ pipeline {
             steps {
                 // Build the Android app for the specified BUILD_TYPE
                 sh "echo $ANDROID_HOME"
+                sh "/usr/lib/jvm/java-21-openjdk-amd64/bin/javac --version"
                 sh "./gradlew --debug --scan assemble${BUILD_TYPE.capitalize()}"
             }
         }
