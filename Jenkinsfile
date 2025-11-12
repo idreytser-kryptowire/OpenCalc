@@ -1,0 +1,58 @@
+pipeline {
+    agent any // Or specify a specific agent/label
+
+    environment {
+        // Define your build variant (e.g., debug, release)
+        BUILD_TYPE = 'debug' 
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your Android project from SCM
+                git branch: 'main', credentialsId: 'your-git-credentials-id', url: 'your-repository-url'
+            }
+        }
+
+        stage('Clean') {
+            steps {
+                // Clean the project
+                sh './gradlew clean'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build the Android app for the specified BUILD_TYPE
+                sh "./gradlew assemble${BUILD_TYPE.capitalize()}"
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run unit tests (if you have them)
+                sh './gradlew test'
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                // Archive the generated APK
+                archiveArtifacts artifacts: "app/build/outputs/apk/${BUILD_TYPE}/*.apk", fingerprint: true
+            }
+        }
+    }
+
+    post {
+        always {
+            // Optional: Clean up workspace after build
+            deleteDir()
+        }
+        success {
+            echo 'Android app build successful!'
+        }
+        failure {
+            echo 'Android app build failed!'
+        }
+    }
+}
