@@ -5,7 +5,7 @@ pipeline {
         // Define your build variant (e.g., debug, release)
         BUILD_TYPE = 'debug' 
         ANDROID_HOME = '/home/ilya/Android/Sdk'
-        JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+        JAVA_HOME='/usr/lib/jvm/java-17-openjdk-amd64'
     }
 
     stages {
