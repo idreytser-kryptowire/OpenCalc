@@ -4,6 +4,7 @@ pipeline {
     environment {
         // Define your build variant (e.g., debug, release)
         BUILD_TYPE = 'debug' 
+        ANDROID_HOME = '/home/ilya/Android/sdk'
     }
 
     stages {
