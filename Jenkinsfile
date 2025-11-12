@@ -27,6 +27,7 @@ pipeline {
             steps {
                 // Build the Android app for the specified BUILD_TYPE
                 sh "echo $ANDROID_HOME"
+                sh "whoami"
                 sh "/usr/lib/jvm/java-21-openjdk-amd64/bin/javac --version"
                 sh "echo $JAVA_HOME"
                 sh "sdkmanager --licenses"
