@@ -33,7 +33,6 @@ pipeline {
             steps {
                   kwSubmit filePath: "app/build/outputs/apk/debug/app-debug.apk", platform: 'android'
                 }
-            }
         }
         
         stage('Archive Artifacts') {
