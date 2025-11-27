@@ -31,7 +31,7 @@ pipeline {
 
         stage('Kryptowire') {
             steps {
-                withCredentials([string(credentialsId: 'KryptowireAPIKey', variable: 'API_KEY')]) {
+                withCredentials([string(credentialsId: 'kryptowire-api-key', variable: 'API_KEY')]) {
                     kwSubmit filePath: "app/build/outputs/apk/debug/app-debug.apk", platform: 'android', apiKey: $API_KEY
                 }
             }
