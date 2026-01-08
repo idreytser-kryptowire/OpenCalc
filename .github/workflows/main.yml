@@ -41,6 +41,6 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: appSubmit
         with:
-          path-to-file: "app/build/outputs/apk/prod/debug/app-prod-debug.apk"
+          path-to-file: "app/build/outputs/apk/release/app-release.apk"
           platform: "android"
           apiKey: ${{ secrets.KRYPTOWIRE_API_KEY }}
