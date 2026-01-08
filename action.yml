@@ -1,0 +1,18 @@
+name: "Kryptowire Analysis"
+description: "Submit app file to the Kryptowire Portal for analysis"
+inputs:
+  path-to-file:
+    description: "Path to the artifact file"
+    required: true
+  platform:
+    description: "Platform the app belongs to"
+    required: true
+  apiKey:
+    description: "API Key for the user"
+    required: true
+runs:
+  using: "node12"
+  main: "index.js"
+branding:
+  icon: "award"
+  color: "green"
