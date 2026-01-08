@@ -46,6 +46,6 @@ jobs:
           apiKey: ${{ secrets.KRYPTOWIRE_API_KEY }}
 
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ${path-to-file}.sarif # Path to your SARIF file
+          sarif_file: ${{ path-to-file }}.sarif # Path to your SARIF file
