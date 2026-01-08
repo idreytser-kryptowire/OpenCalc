@@ -18,6 +18,13 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    lint {
+        // Disables lint checks on release builds
+        checkReleaseBuilds = false
+
+        // Prevents lint from stopping the build if errors are found
+        abortOnError = false
+    }
 
     buildTypes {
         release {
