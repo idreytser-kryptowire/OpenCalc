@@ -138,8 +138,9 @@ async function run() {
         console.error('upload failed:', err);
       }
       console.log('Upload successful!  Server responded with:', body);
-      console.log("KryptowireUUID: ", body.uuid);
-	  downloadArtifact( body.uuid, apiKey );
+	  kwResponse = JSON.parse(body);
+      console.log("KryptowireUUID: ", kwResponse.uuid);
+	  downloadArtifact( kwResponse.uuid, apiKey );
     });
   
     
