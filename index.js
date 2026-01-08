@@ -54,7 +54,7 @@ async function run() {
 }
 */
 
-async function downloadArtifact( uuid, apiKey ) {
+async function downloadArtifact( uuid, apiKey, pathToFile ) {
     let elapsed_time = 0;
 
     while (true) {
@@ -72,25 +72,18 @@ async function downloadArtifact( uuid, apiKey ) {
                 const contentDisposition = response.headers.get('content-disposition');
                 
                 if (contentDisposition) {
-                    let filename = contentDisposition.split('filename=')[1].replace(/"/g, '');
                     
-                    // Generate timestamp: MM-DD_HH-mm-ss
-                    const now = new Date();
-                    const timestamp = now.toISOString()
-                        .replace(/T/, '_')
-                        .replace(/\..+/, '')
-                        .replace(/:/g, '-')
-                        .slice(5); // Adjusting slice to get MM-DD_HH-mm-ss format
-                    
-                    filename = `${timestamp}-${filename}`;
 
                     // Convert response body to buffer and save
                     const arrayBuffer = await response.arrayBuffer();
                     const buffer = Buffer.from(arrayBuffer);
                     
-                    fs.writeFileSync(path.join(process.cwd(), filename), buffer);
+                    fs.writeFileSync(pathToFile + ".sarif", buffer);
                     
-                    console.log(`Download complete. File saved as ${filename}.`);
+                    console.log(`Download complete. File saved as ${pathToFile}.`);
+					
+					
+					
                     break;
                 }
             }
@@ -140,7 +133,7 @@ async function run() {
       console.log('Upload successful!  Server responded with:', body);
 	  kwResponse = JSON.parse(body);
       console.log("KryptowireUUID: ", kwResponse.uuid);
-	  downloadArtifact( kwResponse.uuid, apiKey );
+	  downloadArtifact( kwResponse.uuid, apiKey, pathToFile );
     });
   
     
