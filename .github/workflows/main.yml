@@ -43,11 +43,11 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: appSubmit
         with:
-          path-to-file: $path-to-file
+          path-to-file: ${{ env.path-to-file }}
           platform: "android"
           apiKey: ${{ secrets.KRYPTOWIRE_API_KEY }}
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ${{path-to-file}}.sarif # Path to your SARIF file
+          sarif_file: ${{ env.path-to-file }}.sarif # Path to your SARIF file
