@@ -1,0 +1,16 @@
+on: [push]
+
+jobs:
+  kryptowire_analysis_job:
+    runs-on: ubuntu-latest
+    name: Submit app to Kryptowire Portal
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Kryptowire Analysis Submission
+        uses: ./ # Uses an action in the root directory
+        id: appSubmit
+        with:
+          path-to-file: "app/build/outputs/apk/prod/debug/app-prod-debug.apk"
+          platform: "android"
+          apiKey: ${{ secrets.KRYPTOWIRE_API_KEY }}
