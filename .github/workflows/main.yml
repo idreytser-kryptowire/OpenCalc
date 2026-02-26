@@ -47,6 +47,34 @@ jobs:
           platform: "android"
           apiKey: ${{ secrets.KRYPTOWIRE_API_KEY }}
 
+        # --- NEW STEP TO FIX SARIF LOCATIONS ---
+      - name: Fix missing locations in SARIF
+        run: |
+          python3 -c "
+          import json
+          path = '${{ env.path-to-file }}.sarif'
+          try:
+              with open(path, 'r') as f:
+                  data = json.load(f)
+
+              # Loop through results and inject a dummy location if missing
+              for run in data.get('runs', []):
+                  for res in run.get('results', []):
+                      if not res.get('locations'):
+                          res['locations'] = [{
+                              'physicalLocation': {
+                                  'artifactLocation': {'uri': 'app/build.gradle'},
+                                  'region': {'startLine': 1}
+                              }
+                          }]
+
+              with open(path, 'w') as f:
+                  json.dump(data, f, indent=2)
+              print('Successfully patched SARIF file.')
+          except Exception as e:
+              print(f'Error patching SARIF: {e}')
+          "
+
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         with:
