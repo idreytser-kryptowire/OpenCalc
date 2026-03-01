@@ -47,8 +47,8 @@ jobs:
           platform: "android"
           apiKey: ${{ secrets.KRYPTOWIRE_API_KEY }}
 
-        # --- NEW STEP TO FIX SARIF LOCATIONS ---
-      - name: Fix missing locations in SARIF
+# --- UPDATED STEP TO FIX SARIF LOCATIONS AND IDs ---
+      - name: Fix SARIF format issues
         run: |
           python3 -c "
           import json
@@ -57,9 +57,10 @@ jobs:
               with open(path, 'r') as f:
                   data = json.load(f)
 
-              # Loop through results and inject a dummy location if missing
+              # Loop through results to apply fixes
               for run in data.get('runs', []):
                   for res in run.get('results', []):
+                      # 1. Inject a dummy location if missing
                       if not res.get('locations'):
                           res['locations'] = [{
                               'physicalLocation': {
@@ -67,6 +68,12 @@ jobs:
                                   'region': {'startLine': 1}
                               }
                           }]
+
+                      # 2. Convert threadFlow IDs from integers to strings
+                      for cf in res.get('codeFlows', []):
+                          for tf in cf.get('threadFlows', []):
+                              if 'id' in tf and not isinstance(tf['id'], str):
+                                  tf['id'] = str(tf['id'])
 
               with open(path, 'w') as f:
                   json.dump(data, f, indent=2)
@@ -78,4 +85,4 @@ jobs:
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ${{ env.path-to-file }}.sarif # Path to your SARIF file
+          sarif_file: ${{ env.path-to-file }}.sarif
