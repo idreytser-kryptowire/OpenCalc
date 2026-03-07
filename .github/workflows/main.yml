@@ -47,7 +47,6 @@ jobs:
 #           platform: "android"
 #           apiKey: ${{ secrets.KRYPTOWIRE_API_KEY }}
 
-# --- UPDATED STEP TO FIX SARIF LOCATIONS AND IDs ---
       - name: Patch SARIF file
         run: |
           python3 -c "
@@ -60,7 +59,7 @@ jobs:
               # Loop through results to apply fixes
               for run in data.get('runs', []):
                   for res in run.get('results', []):
-                      # 1. Inject a dummy location if missing
+                      # 1. Inject or fix locations
                       if not res.get('locations'):
                           res['locations'] = [{
                               'physicalLocation': {
@@ -68,6 +67,17 @@ jobs:
                                   'region': {'startLine': 1}
                               }
                           }]
+                      else:
+                          # If locations exist, ensure they have a valid artifactLocation
+                          for loc in res['locations']:
+                              if 'physicalLocation' not in loc:
+                                  loc['physicalLocation'] = {}
+                              if 'artifactLocation' not in loc['physicalLocation']:
+                                  loc['physicalLocation']['artifactLocation'] = {'uri': 'app/build.gradle'}
+                              if 'uri' not in loc['physicalLocation']['artifactLocation']:
+                                  loc['physicalLocation']['artifactLocation']['uri'] = 'app/build.gradle'
+                              if 'region' not in loc['physicalLocation']:
+                                  loc['physicalLocation']['region'] = {'startLine': 1}
 
                       # 2. Convert threadFlow IDs from integers to strings
                       for cf in res.get('codeFlows', []):
@@ -78,7 +88,6 @@ jobs:
                       # 3. Blanket convert ALL properties to strings
                       if 'properties' in res:
                           for key, value in res['properties'].items():
-                              # Convert floats, ints, booleans, arrays, etc., into string representations
                               if not isinstance(value, str):
                                   res['properties'][key] = str(value)
 
