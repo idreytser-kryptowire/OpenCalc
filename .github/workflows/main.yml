@@ -48,7 +48,7 @@ jobs:
 #           apiKey: ${{ secrets.KRYPTOWIRE_API_KEY }}
 
 # --- UPDATED STEP TO FIX SARIF LOCATIONS AND IDs ---
-      - name: Fix SARIF format issues
+      - name: Patch SARIF file
         run: |
           python3 -c "
           import json
@@ -74,6 +74,13 @@ jobs:
                           for tf in cf.get('threadFlows', []):
                               if 'id' in tf and not isinstance(tf['id'], str):
                                   tf['id'] = str(tf['id'])
+
+                      # 3. Blanket convert ALL properties to strings
+                      if 'properties' in res:
+                          for key, value in res['properties'].items():
+                              # Convert floats, ints, booleans, arrays, etc., into string representations
+                              if not isinstance(value, str):
+                                  res['properties'][key] = str(value)
 
               with open(path, 'w') as f:
                   json.dump(data, f, indent=2)
