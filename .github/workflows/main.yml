@@ -1,7 +1,7 @@
 on: [push]
 
 env: 
-    path-to-file: "test"
+    path-to-file: "app/build/outputs/apk/release/app-release.apk"
 jobs:
   kryptowire_analysis_job:
     runs-on: ubuntu-latest
